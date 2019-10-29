@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <style type="text/css">
+    input {
+        width: 40%;
+        height: 50px;
+        font-size: 30px;
+    }
+    </style>
+  </head>
+  <body>
+    <center>
+    <h1>人数を入力してください</h1>
+    <br>
+    <br>
+    <input type="number" id="entry_number">
+    <br>
+    <br>
+    <br>
+    <input type="button" style="background-color:blue; width:160px; height:40px;" onclick="transition()" value="決定"/>
+    </center>
+  </body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+function transition(){
+  const entry_number = $('#entry_number').val();
+  if(entry_number === ""){
+    alert("人数が入力されていません");
+    return;
+  }
+
+  window.location.href = 'button_game.html?name=' + entry_number;
+}
+</script>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <style type="text/css">
+      .kujibiki{
+        margin-right: 10px;
+        margin-bottom: 30px;
+      }
+      .outline {
+        text-align:center;
+      }
+      .roulette {
+        display: inline-block;
+        border:1px solid #000000;
+        font-size:40px;
+        height:170px;
+      }
+      .output {
+        display: inline-block;
+        font-size:40px;
+        height:100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="outline">
+      <br />
+      <div class="output" id="output"></div>
+
+      <br />
+      <br />
+      <br />
+
+      <div id="button_area">
+      <!-- <input class="kujibiki" type="button" style="background-color:red; width:80px; height:40px;" id="1" value="1" onclick="kuji(1);"/>
+      <input class="kujibiki" type="button" style="background-color:blue; width:80px; height:40px;" id="2" value="2" onclick="kuji(2);"/>
+      <input class="kujibiki" type="button" style="background-color:green; width:80px; height:40px;" id="3" value="3" onclick="kuji(3);"/>
+      <br>
+      <br>
+      <input class="kujibiki" type="button" style="background-color:yellow; width:80px; height:40px;" id="4" value="4" onclick="kuji(4);"/>
+      <input class="kujibiki" type="button" style="background-color:purple; width:80px; height:40px;" id="5" value="5" onclick="kuji(5);"/>
+      <input class="kujibiki" type="button" style="background-color:pink; width:80px; height:40px;" id="6" value="6" onclick="kuji(6);"/> -->
+      </div>
+
+      <br>
+      <br>
+      <br>
+      <br>
+      
+      <input type="button" style="width:100px; height:40px;" value="RESET" onclick="reset();"/>
+
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <h1>
+        <span class="text-wrapper">
+            <span class="letters"></span>
+      </span>
+    </h1>
+  </body>
+</html>
+<style>
+h1 {
+    color: white;
+    top : 50%;
+    transform : translateY(-50%);
+    font-family: 'Open Sans Condensed', sans-serif;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size: 1.9em;
+    letter-spacing: 10px;
+    position : relative;
+    text-align: center;
+}
+
+h1 .text-wrapper {
+    position: relative;
+    display: inline-block;
+
+}
+
+h1 .letter {
+    color: black;
+    transform-origin: 50% 100%;
+    display: inline-block;
+    line-height: 1em;
+    transform: translateZ(0); /*for older browsers*/
+    will-change: transform;
+
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.min.js"></script>
+<script>
+const value = location.search.split('=');
+const entry_number = decodeURIComponent(value[1]);
+let out_number = create_random_number(entry_number);
+
+$(document).ready(function(){
+    /* ボタンを動的生成 */
+    for(var i = 1; i <= entry_number; ++i){
+      $('#button_area').append(`<input class="kujibiki" type="button" style="${get_color_style(i)}; width:80px; height:40px;" id="${i}" value="${i}" onclick="kuji(${i});"/>`);
+    }
+});
+
+function create_random_number(range_number){
+  return ( Math.ceil( Math.random()*range_number ) );
+}
+
+function get_color_style(number){
+  let color_style = "";
+
+  // numberは1～6のため0～5に変換する
+  switch((number-1)%6){
+    case 0:
+      color_style = "background-color:red";
+      break;
+    case 1:
+      color_style = "background-color:blue";
+      break;
+    case 2:
+      color_style = "background-color:green";
+      break;
+    case 3:
+      color_style = "background-color:yellow";
+      break;
+    case 4:
+      color_style = "background-color:purple";
+      break;
+    case 5:
+      color_style = "background-color:pink";
+      break;
+    default:
+      color_style = "background-color:white";
+      break;
+  }
+  
+  return color_style;
+}
+
+function kuji(number){
+  // 選択したボタンは二度押下できないように抑制
+  document.getElementById(number).disabled = true;
+
+  if(number === out_number)
+    document.getElementById("output").innerHTML = "OUT!";
+  else
+    document.getElementById("output").innerHTML = "SAFE!";
+}
+
+function reset(){
+  $('#button_area').children().each(function(i, button_dom){
+    button_dom.disabled = false;
+  });
+  document.getElementById("output").innerHTML = "";
+  out_number = create_random_number(entry_number);
+}
+</script>
